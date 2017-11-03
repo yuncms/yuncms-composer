@@ -1,0 +1,46 @@
+{
+  "name": "yuncms/yuncms-composer",
+  "description": "The composer plugin for yuncms module installer",
+  "keywords": [
+    "yii2",
+    "composer",
+    "yuncms",
+    "module installer"
+  ],
+  "type": "composer-plugin",
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/yuncms/yii2-composer/issues",
+    "source": "https://github.com/yuncms/yii2-composer"
+  },
+  "authors": [
+    {
+      "name": "Tongle Xu",
+      "email": "xutongle@gmail.com"
+    }
+  ],
+  "require": {
+    "composer-plugin-api": "^1.0",
+    "yiisoft/yii2-composer": "~2.0.0"
+  },
+  "require-dev": {
+    "composer/composer": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "yuncms\\composer\\": ""
+    }
+  },
+  "extra": {
+    "class": "yuncms\\composer\\Plugin",
+    "branch-alias": {
+      "dev-master": "2.0.x-dev"
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://packagist.phpcomposer.com"
+    }
+  ]
+}
