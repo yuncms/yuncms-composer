@@ -183,7 +183,7 @@ class LibraryInstaller extends Installer
      * @param $file
      * @return void
      */
-    protected function opcacheInvalidate($file): void
+    protected function opcacheInvalidate($file)
     {
         // invalidate opcache of extensions.php if exists
         if (function_exists('opcache_invalidate')) {
