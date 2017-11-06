@@ -17,13 +17,14 @@ use Composer\Repository\InstalledRepositoryInterface;
 class LibraryInstaller extends Installer
 {
     const EXTRA_FIELD = 'yuncms';
-    const TRANSLATE_FILE = 'yuncms/i18n.php';
-    const MIGRATION_FILE = 'yuncms/migrations.php';
+    const TRANSLATE_FILE = 'yuncms/i18n.php';//全局语言包
+    const MIGRATION_FILE = 'yuncms/migrations.php';//全局迁移
+    const EVENT_FILE = 'yuncms/events.php';//全局事件
+    const CRON_FILE = 'yuncms/cron.php';//计划任务
+    const FRONTEND_MODULE_FILE = 'yuncms/frontend.php';//后端配置文件
+    const BACKEND_MODULE_FILE = 'yuncms/backend.php';//前端配置文件
+    const CONSOLE_FILE = 'yuncms/console.php';//控制台配置文件
 
-    const FRONTEND_MODULE_FILE = 'yuncms/frontend.php';
-    const BACKEND_MODULE_FILE = 'yuncms/backend.php';
-    const EVENT_FILE = 'yuncms/events.php';
-    const CRON_FILE = 'yuncms/cron.php';
 
     /**
      * @inheritdoc
