@@ -19,7 +19,6 @@ class LibraryInstaller extends Installer
     const EXTRA_FIELD = 'yuncms';
     const TRANSLATE_FILE = 'yuncms/i18n.php';//全局语言包
     const MIGRATION_FILE = 'yuncms/migrations.php';//全局迁移
-    const EVENT_FILE = 'yuncms/events.php';//全局事件
     const CRON_FILE = 'yuncms/cron.php';//计划任务
     const FRONTEND_MODULE_FILE = 'yuncms/frontend.php';//后端配置文件
     const BACKEND_MODULE_FILE = 'yuncms/backend.php';//前端配置文件
@@ -98,19 +97,12 @@ class LibraryInstaller extends Installer
                 $translates[$translateName] = $extra[self::EXTRA_FIELD]['i18n'];
                 $this->saveConfig($translates, self::TRANSLATE_FILE);
             }
-            //处理事件
-            if (isset($extra[self::EXTRA_FIELD]['name']) && isset($extra[self::EXTRA_FIELD]['events'])) {
-                $events = $this->loadConfig(self::EVENT_FILE);
-                $translateName = $extra[self::EXTRA_FIELD]['name'];
-                $events[$translateName] = $extra[self::EXTRA_FIELD]['events'];
-                $this->saveConfig($events, self::EVENT_FILE);
-            }
             //处理定时任务
             if (isset($extra[self::EXTRA_FIELD]['name']) && isset($extra[self::EXTRA_FIELD]['cron'])) {
-                $crons = $this->loadConfig(self::CRON_FILE);
-                $translateName = $extra[self::EXTRA_FIELD]['name'];
-                $crons[$translateName] = $extra[self::EXTRA_FIELD]['cron'];
-                $this->saveConfig($crons, self::CRON_FILE);
+                $cron = $this->loadConfig(self::CRON_FILE);
+                $cronName = $extra[self::EXTRA_FIELD]['name'];
+                $cron[$cronName] = $extra[self::EXTRA_FIELD]['cron'];
+                $this->saveConfig($cron, self::CRON_FILE);
             }
         }
     }
@@ -123,14 +115,17 @@ class LibraryInstaller extends Installer
     {
         $extra = $package->getExtra();
         if (isset($extra[self::EXTRA_FIELD]['name'])) {
+            //删除前端模块
             $modules = $this->loadConfig(self::FRONTEND_MODULE_FILE);
             unset($modules[$extra[self::EXTRA_FIELD]['name']]);
             $this->saveConfig($modules, self::FRONTEND_MODULE_FILE);
 
+            //删除后端模块
             $backendModules = $this->loadConfig(self::BACKEND_MODULE_FILE);
             unset($backendModules[$extra[self::EXTRA_FIELD]['name']]);
             $this->saveConfig($backendModules, self::BACKEND_MODULE_FILE);
 
+            //删除迁移
             $migrations = $this->loadConfig(self::MIGRATION_FILE);
             if (isset($extra[self::EXTRA_FIELD]['migrationNamespace'])) {
                 foreach ($migrations as $id => $migration) {
@@ -138,14 +133,21 @@ class LibraryInstaller extends Installer
                         unset($migrations[$id]);
                     }
                 }
+                asort($migrations);
                 $this->saveConfig($migrations, self::MIGRATION_FILE);
             }
 
+            //删除翻译
             $translates = $this->loadConfig(self::TRANSLATE_FILE);
             $translateName = $extra[self::EXTRA_FIELD]['name'] . '*';
             unset($translates[$translateName]);
             $this->saveConfig($translates, self::TRANSLATE_FILE);
 
+            //删除计划任务
+            $cron = $this->loadConfig(self::CRON_FILE);
+            $cronName = $extra[self::EXTRA_FIELD]['name'] . '*';
+            unset($cron[$cronName]);
+            $this->saveConfig($cron, self::CRON_FILE);
         }
     }
 

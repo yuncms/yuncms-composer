@@ -36,7 +36,6 @@ class Plugin extends \yii\composer\Plugin implements PluginInterface, EventSubsc
             $vendorDir . '/' . LibraryInstaller::FRONTEND_MODULE_FILE,
             $vendorDir . '/' . LibraryInstaller::MIGRATION_FILE,
             $vendorDir . '/' . LibraryInstaller::TRANSLATE_FILE,
-            $vendorDir . '/' . LibraryInstaller::EVENT_FILE,
             $vendorDir . '/' . LibraryInstaller::CRON_FILE
         ];
         $this->mkFile($files);
