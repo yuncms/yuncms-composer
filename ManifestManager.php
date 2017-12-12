@@ -15,7 +15,7 @@ class ManifestManager
 {
     const PACKAGE_TYPE = 'yii2-extension';
     //const EXTRA_OBSERVER = 'observers';
-    const EXTRA_OBSERVER = 'yuncms';
+    const EXTRA_FIELD = 'yuncms';
 
     /**
      * The vendor path.
@@ -61,11 +61,9 @@ class ManifestManager
     public function build()
     {
         $packages = [];
-
         if (file_exists($installed = $this->vendorPath.'/composer/installed.json')) {
             $packages = json_decode(file_get_contents($installed), true);
         }
-
         $this->write($this->map($packages));
     }
 
@@ -77,15 +75,15 @@ class ManifestManager
     public function map(array $packages): array
     {
         $manifest = [];
-
         foreach ($packages as $package) {
             if ($package['type'] === self::PACKAGE_TYPE) {
-                $manifest[$package['name']] = [
-                    self::EXTRA_OBSERVER => $package['extra'][self::EXTRA_OBSERVER] ?? [],
-                ];
+                if(isset($package['extra'][self::EXTRA_FIELD])){
+                    $manifest[$package['name']] = [
+                        self::EXTRA_FIELD => $package['extra'][self::EXTRA_FIELD] ?? [],
+                    ];
+                }
             }
         }
-
         return $manifest;
     }
 
