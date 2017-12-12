@@ -16,7 +16,7 @@ class ManifestManager
     const PACKAGE_TYPE = 'yii2-extension';
 
     const EXTRA_FIELD = 'yuncms';
-    const TRANSLATE_FILE = 'yuncms/i18n.php';//全局语言包
+    const TRANSLATE_FILE = 'yuncms/translates.php';//全局语言包
     const MIGRATION_FILE = 'yuncms/migrations.php';//全局迁移
     const TASK_FILE = 'yuncms/tasks.php';//计划任务
     const EVENT_FILE = 'yuncms/events.php';//计划任务
@@ -63,8 +63,8 @@ class ManifestManager
                 if (isset($extra['backend']['class'])) {//处理后端模块
                     $backendManifest[$extra['id']] = $extra['backend'];
                 }
-                if (isset($extra['i18n'])) {//处理语言包
-                    $translateManifest[$package['name'] . '*'] = $extra['i18n'];
+                if (isset($extra['translate'])) {//处理语言包
+                    $translateManifest[$package['name'] . '*'] = $extra['translate'];
                 }
                 if (isset($extra['migrationNamespace'])) {//迁移
                     $migrationManifest[] = $extra['migrationNamespace'];
