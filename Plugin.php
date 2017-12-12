@@ -19,43 +19,14 @@ use Composer\Script\ScriptEvents;
  *
  * @author Tongle XU <xutongle@gmail.com>
  */
-class Plugin extends \yii\composer\Plugin implements PluginInterface, EventSubscriberInterface
+class Plugin implements PluginInterface, EventSubscriberInterface
 {
     /**
      * @inheritdoc
      */
     public function activate(Composer $composer, IOInterface $io)
     {
-        parent::activate($composer, $io);
-        $libraryInstaller = new LibraryInstaller($io, $composer);
-        $composer->getInstallationManager()->addInstaller($libraryInstaller);
-        $composer->getInstallationManager()->getInstaller('yii2-extension');//覆盖掉Yii2的
 
-        $vendorDir = rtrim($composer->getConfig()->get('vendor-dir'), '/');
-
-        $files = [
-            $vendorDir . '/' . LibraryInstaller::BACKEND_MODULE_FILE,
-            $vendorDir . '/' . LibraryInstaller::FRONTEND_MODULE_FILE,
-            $vendorDir . '/' . LibraryInstaller::MIGRATION_FILE,
-            $vendorDir . '/' . LibraryInstaller::TRANSLATE_FILE,
-            $vendorDir . '/' . LibraryInstaller::CRON_FILE
-        ];
-        $this->mkFile($files);
-    }
-
-    /**
-     * 创建文件
-     * @param array $files
-     * @return void
-     */
-    public function mkFile($files)
-    {
-        foreach ($files as $file) {
-            if (!is_file($file)) {
-                @mkdir(dirname($file), 0777, true);
-                file_put_contents($file, "<?php\n\nreturn [];\n");
-            }
-        }
     }
 
     /**
@@ -65,10 +36,9 @@ class Plugin extends \yii\composer\Plugin implements PluginInterface, EventSubsc
      */
     public static function getSubscribedEvents()
     {
-        $events = parent::getSubscribedEvents();
-        return array_merge($events, [
+        return [
             ScriptEvents::POST_AUTOLOAD_DUMP => 'postAutoloadDump',
-        ]);
+        ];
     }
 
     /**
@@ -79,7 +49,6 @@ class Plugin extends \yii\composer\Plugin implements PluginInterface, EventSubsc
         $manifest = new ManifestManager(
             $vendorPath = $event->getComposer()->getConfig()->get('vendor-dir'), $vendorPath . '/yuncms/extensions.php'
         );
-
         $manifest->unlink()->build();
     }
 
