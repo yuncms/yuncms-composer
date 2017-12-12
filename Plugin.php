@@ -11,6 +11,8 @@ use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\EventDispatcher\EventSubscriberInterface;
+use Composer\Script\Event as ScriptEvent;
+use Composer\Script\ScriptEvents;
 
 /**
  * Plugin is the composer plugin that registers the Yii composer installer.
@@ -54,6 +56,31 @@ class Plugin extends \yii\composer\Plugin implements PluginInterface, EventSubsc
                 file_put_contents($file, "<?php\n\nreturn [];\n");
             }
         }
+    }
+
+    /**
+     * Listen events.
+     *
+     * @return array
+     */
+    public static function getSubscribedEvents()
+    {
+        $events = parent::getSubscribedEvents();
+        return array_merge($events, [
+            ScriptEvents::POST_AUTOLOAD_DUMP => 'postAutoloadDump',
+        ]);
+    }
+
+    /**
+     * @param \Composer\Script\Event $event
+     */
+    public function postAutoloadDump(ScriptEvent $event)
+    {
+        $manifest = new ManifestManager(
+            $vendorPath = $event->getComposer()->getConfig()->get('vendor-dir'), $vendorPath . '/yuncms/yuncms-composer/extensions.php'
+        );
+
+        $manifest->unlink()->build();
     }
 
 }
