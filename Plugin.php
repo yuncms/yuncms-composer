@@ -77,7 +77,7 @@ class Plugin extends \yii\composer\Plugin implements PluginInterface, EventSubsc
     public function postAutoloadDump(ScriptEvent $event)
     {
         $manifest = new ManifestManager(
-            $vendorPath = $event->getComposer()->getConfig()->get('vendor-dir'), $vendorPath . '/yuncms/yuncms-composer/extensions.php'
+            $vendorPath = $event->getComposer()->getConfig()->get('vendor-dir'), $vendorPath . '/yuncms/extensions.php'
         );
 
         $manifest->unlink()->build();
