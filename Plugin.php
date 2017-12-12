@@ -46,10 +46,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function postAutoloadDump(ScriptEvent $event)
     {
-        $manifest = new ManifestManager(
-            $vendorPath = $event->getComposer()->getConfig()->get('vendor-dir'), $vendorPath . '/yuncms/extensions.php'
-        );
-        $manifest->unlink()->build();
+        $vendorDir = rtrim($event->getComposer()->getConfig()->get('vendor-dir'), '/');
+        $manifest = new ManifestManager($vendorDir);
+        $manifest->build();
     }
 
 }
