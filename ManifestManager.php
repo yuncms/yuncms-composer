@@ -64,7 +64,7 @@ class ManifestManager
                     $backendManifest[$extra['id']] = $extra['backend'];
                 }
                 if (isset($extra['translate'])) {//处理语言包
-                    $translateManifest[$package['name'] . '*'] = $extra['translate'];
+                    $translateManifest[$extra['id'] . '*'] = $extra['translate'];
                 }
                 if (isset($extra['migrationNamespace'])) {//迁移
                     $migrationManifest[] = $extra['migrationNamespace'];
