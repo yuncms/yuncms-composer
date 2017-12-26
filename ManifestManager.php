@@ -32,7 +32,6 @@ class ManifestManager
 
     /**
      * @param string $vendorPath
-     * @param string $manifestPath
      */
     public function __construct(string $vendorPath)
     {
